@@ -53,6 +53,7 @@ async function main() {
       labels: core.getInput("labels"),
       assignees: core.getInput("assignees"),
       reviewers: core.getInput("reviewers"),
+      team_reviewers: core.getInput("team_reviewers"),
       autoMerge: core.getInput("auto-merge"),
       updatePRTitleAndBody: core.getInput("update-pull-request-title-and-body"),
     };
@@ -233,6 +234,7 @@ async function main() {
           repo,
           pull_number: number,
           reviewers,
+          team_reviewers
         }
       );
       core.info(`Reviewers added: ${reviewers.join(", ")}`);
