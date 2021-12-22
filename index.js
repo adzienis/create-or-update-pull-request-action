@@ -222,6 +222,23 @@ async function main() {
       core.debug(inspect(data));
     }
 
+    
+    if (inputs.reviewers) {
+      core.debug(`Adding reviewers: ${inputs.reviewers}`);
+      const reviewers = inputs.reviewers.trim().split(/\s*,\s*/);
+      const { data } = await octokit.request(
+        `POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers`,
+        {
+          owner,
+          repo,
+          issue_number: number,
+          reviewerss,
+        }
+      );
+      core.info(`Reviewers added: ${reviewers.join(", ")}`);
+      core.debug(inspect(data));
+    }
+
     if (inputs.autoMerge) {
       const query = `
         mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!, $commitHeadline: String!) {
