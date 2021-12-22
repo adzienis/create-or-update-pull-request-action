@@ -232,6 +232,7 @@ jobs:
           branch: test-add-reviewers-${{ github.run_number }}
           commit-message: "Just testing [skip ci]"
           reviewers: adzienis
+          team_reviewers: test-reviewers
       - uses: octokit/request-action@v2.x
         id: get-pull-request
         with:
@@ -246,3 +247,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - if: ${{ !contains(toJson(fromJson(steps.get-pull-request.outputs.data).requested_reviewers.*.login), 'adzienis') }}
         run: 'echo "Requested reviewers are \"${{ toJson(fromJson(steps.get-pull-request.outputs.data).requested_reviewers.*.login) }}\" but expected \"[\n adzienis \n]\"" && exit 1'
+      - if: ${{ !contains(toJson(fromJson(steps.get-pull-request.outputs.data).requested_teams.*.login), 'test-reviewers') }}
+        run: 'echo "Requested reviewers are \"${{ toJson(fromJson(steps.get-pull-request.outputs.data).requested_teams.*.login) }}\" but expected \"[\n test-reviewers \n]\"" && exit 1'
