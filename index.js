@@ -53,6 +53,7 @@ async function main() {
       labels: core.getInput("labels"),
       assignees: core.getInput("assignees"),
       reviewers: core.getInput("reviewers"),
+      team_reviewers: core.getInput("team_reviewers"),
       autoMerge: core.getInput("auto-merge"),
       updatePRTitleAndBody: core.getInput("update-pull-request-title-and-body"),
     };
@@ -226,6 +227,7 @@ async function main() {
     if (inputs.reviewers) {
       core.debug(`Adding reviewers: ${inputs.reviewers}`);
       const reviewers = inputs.reviewers.trim().split(/\s*,\s*/);
+      const team_reviewers = inputs.team_reviewers.trim().split(/\s*,\s*/);
       const { data } = await octokit.request(
         `POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers`,
         {
@@ -233,6 +235,7 @@ async function main() {
           repo,
           pull_number: number,
           reviewers,
+          team_reviewers
         }
       );
       core.info(`Reviewers added: ${reviewers.join(", ")}`);
